@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using CloudantDotNet.Services;
+using dotnetCloudantWebstarter.Repositories;
+using dotnetCloudantWebstarter.Services;
 
 namespace CloudantDotNet
 {
@@ -57,6 +59,8 @@ namespace CloudantDotNet
             };
             services.AddSingleton(typeof(CloudantDotNet.Models.Creds), creds);
             services.AddTransient<ICloudantService, CloudantService>();
+            services.AddTransient<IServiceRepository, CloudantServiceRepository>();
+            services.AddTransient<IServiceManager, ServiceManager>();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

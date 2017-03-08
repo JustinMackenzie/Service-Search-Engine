@@ -20,7 +20,7 @@ function xhrGet(url, callback, errback){
 			if (xhr.status === 200) {
 				callback(parseJson(xhr.responseText));
 			} else {
-				errback('service not available');
+				errback('serviceManager not available');
 			}
 		}
 	};
@@ -36,7 +36,7 @@ function xhrPut(url, data, callback, errback){
 			if(xhr.status === 200){
 				callback();
 			}else{
-				errback('service not available');
+				errback('serviceManager not available');
 			}
 		}
 	};
@@ -53,7 +53,7 @@ function xhrPost(url, data, callback, errback){
 			if(xhr.status === 200){
 				callback(parseJson(xhr.responseText));
 			}else{
-				errback('service not available');
+				errback('serviceManager not available');
 			}
 		}
 	};
@@ -69,7 +69,7 @@ function xhrDelete(url, callback, errback){
 			if(xhr.status === 200){
 				callback();
 			}else{
-				errback('service not available');
+				errback('serviceManager not available');
 			}
 		}
 	};

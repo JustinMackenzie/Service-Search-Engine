@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace dotnetCloudantWebstarter.Models
 {
@@ -13,12 +12,25 @@ namespace dotnetCloudantWebstarter.Models
         public string Description { get; set; }
         public List<string> Tags { get; set; }
         public List<ServiceInput> Input { get; set; }
-        public int Revision { get; set; }
+        [JsonProperty(PropertyName = "_rev")]
+        public string Revision { get; set; }
+        [JsonProperty(PropertyName = "_id")]
+        public string CloudantId { get; set; }
     }
 
     public class ServiceInput
     {
         public string Name { get; set; }
         public string Type { get; set; }
+    }
+
+    public class ServiceViewModel
+    {
+        public Guid Id { get; set; }
+        public Guid OrganizationId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public List<string> Tags { get; set; }
+        public List<ServiceInput> Input { get; set; }
     }
 }

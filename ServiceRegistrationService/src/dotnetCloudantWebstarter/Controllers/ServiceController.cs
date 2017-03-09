@@ -50,8 +50,7 @@ namespace dotnetCloudantWebstarter.Controllers
         [HttpPut("{id}")]
         public void Put(Guid id, [FromBody]Service value)
         {
-            Service service = this.serviceManager.GetService(id);
-            serviceManager.UpdateService(service);
+            serviceManager.UpdateService(value);
         }
 
         // DELETE api/values/5

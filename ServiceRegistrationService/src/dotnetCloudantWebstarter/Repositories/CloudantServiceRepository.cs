@@ -42,7 +42,7 @@ namespace dotnetCloudantWebstarter.Repositories
         {
             using (var client = CloudantClient())
             {
-                var response = client.DeleteAsync(_dbName + "/" + urlEncoder.Encode(item.Id.ToString()) + "?rev=" + urlEncoder.Encode(item.Revision.ToString())).Result;
+                var response = client.DeleteAsync(_dbName + "/" + urlEncoder.Encode(item.CloudantId) + "?rev=" + urlEncoder.Encode(item.Revision)).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return;
@@ -60,7 +60,10 @@ namespace dotnetCloudantWebstarter.Repositories
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return JsonConvert.DeserializeObject<IEnumerable<Service>>(response.Content.ReadAsStringAsync().Result);
+                    CloudantResponse<Service> cloundantResponse =
+                        JsonConvert.DeserializeObject<CloudantResponse<Service>>(
+                            response.Content.ReadAsStringAsync().Result);
+                    return cloundantResponse.Rows.Select(r => r.Item);
                 }
 
                 string msg = "Failure to GET. Status Code: " + response.StatusCode + ". Reason: " + response.ReasonPhrase;
@@ -77,7 +80,7 @@ namespace dotnetCloudantWebstarter.Repositories
         {
             using (var client = CloudantClient())
             {
-                var response = client.PutAsJsonAsync(_dbName + "/" + urlEncoder.Encode(item.Id.ToString()) + "?rev=" + urlEncoder.Encode(item.Revision.ToString()), item).Result;
+                var response = client.PutAsJsonAsync(_dbName + "/" + urlEncoder.Encode(item.CloudantId) + "?rev=" + urlEncoder.Encode(item.Revision), item).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return;

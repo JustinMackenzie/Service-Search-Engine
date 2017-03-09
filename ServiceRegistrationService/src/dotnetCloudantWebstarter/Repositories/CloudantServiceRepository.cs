@@ -26,9 +26,11 @@ namespace dotnetCloudantWebstarter.Repositories
 
         public void Create(Service item)
         {
+            CreateServiceRequest request = new CreateServiceRequest(item);
+
             using (var client = CloudantClient())
             {
-                var response = client.PostAsJsonAsync(_dbName, item).Result;
+                var response = client.PostAsJsonAsync(_dbName, request).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return;
@@ -106,5 +108,22 @@ namespace dotnetCloudantWebstarter.Repositories
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", auth);
             return client;
         }
+    }
+
+    public class CreateServiceRequest
+    {
+        private readonly Service item;
+
+        public CreateServiceRequest(Service item)
+        {
+            this.item = item;
+        }
+
+        public Guid Id => item.Id;
+        public Guid OrganizationId => item.OrganizationId;
+        public string Name => item.Name;
+        public string Description => item.Description;
+        public List<string> Tags => item.Tags;
+        public List<ServiceInput> Input => item.Input;
     }
 }

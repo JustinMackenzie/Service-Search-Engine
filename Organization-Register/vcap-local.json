@@ -1,18 +1,19 @@
+VCAP_SERVICES
 {
     "cloudantNoSQLDB": [
         {
             "credentials": {
-                "username": "e147c3e6-02c0-4f2d-a4af-9af425f214cc-bluemix",
-                "password": "6d46b740b6ee36ed37e2340c43b2946ca2c62499486f9323908f381d36a1a459",
-                "host": "e147c3e6-02c0-4f2d-a4af-9af425f214cc-bluemix.cloudant.com",
+                "username": "9590411f-ad54-4e8d-b2ba-582d8bb0781f-bluemix",
+                "password": "656e3760f0cad8c4223de3e43bc31619a4765273537836df5d37867c2b7a8a5d",
+                "host": "9590411f-ad54-4e8d-b2ba-582d8bb0781f-bluemix.cloudant.com",
                 "port": 443,
-                "url": "https://e147c3e6-02c0-4f2d-a4af-9af425f214cc-bluemix:6d46b740b6ee36ed37e2340c43b2946ca2c62499486f9323908f381d36a1a459@e147c3e6-02c0-4f2d-a4af-9af425f214cc-bluemix.cloudant.com"
+                "url": "https://9590411f-ad54-4e8d-b2ba-582d8bb0781f-bluemix:656e3760f0cad8c4223de3e43bc31619a4765273537836df5d37867c2b7a8a5d@9590411f-ad54-4e8d-b2ba-582d8bb0781f-bluemix.cloudant.com"
             },
             "syslog_drain_url": null,
             "label": "cloudantNoSQLDB",
             "provider": null,
             "plan": "Lite",
-            "name": "Organization-Registration-cloudantNoSQLDB",
+            "name": "Organization-Registration-Service-DB",
             "tags": [
                 "data_management",
                 "ibm_created",

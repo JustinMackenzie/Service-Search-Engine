@@ -3,8 +3,8 @@ applications:
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: Organization-Registration
-  host: Organization-Registration
+  name: Organization-Registration-Service
+  host: Organization-Registration-Service
   disk_quota: 1024M
   services:
-  - Organization-Registration-cloudantNoSQLDB
+  - Organization-Registration-Service-DB

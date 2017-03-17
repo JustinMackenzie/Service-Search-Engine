@@ -1,1 +1,24 @@
-{}
+{
+    "cloudantNoSQLDB": [
+        {
+            "credentials": {
+                "username": "21a58b0d-24df-4782-a255-2232fada9902-bluemix",
+                "password": "b0af0dba38cff023ed6a7aa1b3e82a2baba15b732088f875ebd36fc5aaa55ae3",
+                "host": "21a58b0d-24df-4782-a255-2232fada9902-bluemix.cloudant.com",
+                "port": 443,
+                "url": "https://21a58b0d-24df-4782-a255-2232fada9902-bluemix:b0af0dba38cff023ed6a7aa1b3e82a2baba15b732088f875ebd36fc5aaa55ae3@21a58b0d-24df-4782-a255-2232fada9902-bluemix.cloudant.com"
+            },
+            "syslog_drain_url": null,
+            "label": "cloudantNoSQLDB",
+            "provider": null,
+            "plan": "Lite",
+            "name": "Service-Registration-Service-cloudantNoSQLDB",
+            "tags": [
+                "data_management",
+                "ibm_created",
+                "lite",
+                "ibm_dedicated_public"
+            ]
+        }
+    ]
+}

@@ -25,7 +25,10 @@
             "version": "1.0.3",
             "include": "all"
         },
-        "System.Runtime.Serialization.Xml": "4.1.1"
+      "System.Runtime.Serialization.Xml": "4.1.1",
+      "YellowPages.Core.Entities": "1.0.0-*",
+      "YellowPages.Core.Repositories": "1.0.0-*",
+      "YellowPages.Infrastructure.CloudantRepositories": "1.0.0-*"
     },
 
     "frameworks": {

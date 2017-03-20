@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B0D2EA56-6B4A-4E72-8A68-98C3011AA71A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02D7750B-1A57-4443-A843-11B5B67042D2}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "YellowPages.Core.Entities", "src\YellowPages.Core.Entities\YellowPages.Core.Entities.xproj", "{AA9CB796-7CAD-4B4C-B364-674B4D4F9243}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "YellowPages.Core.Repositories", "src\YellowPages.Core.Repositories\YellowPages.Core.Repositories.xproj", "{7D268048-656E-4468-8214-03FC977CCBAF}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "YellowPages.Infrastructure.CloudantRepositories", "src\YellowPages.Infrastructure.CloudantRepositories\YellowPages.Infrastructure.CloudantRepositories.xproj", "{75ED45F2-3BC0-47F4-ABD8-DC65C2E35DFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA9CB796-7CAD-4B4C-B364-674B4D4F9243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA9CB796-7CAD-4B4C-B364-674B4D4F9243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA9CB796-7CAD-4B4C-B364-674B4D4F9243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA9CB796-7CAD-4B4C-B364-674B4D4F9243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D268048-656E-4468-8214-03FC977CCBAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D268048-656E-4468-8214-03FC977CCBAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D268048-656E-4468-8214-03FC977CCBAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D268048-656E-4468-8214-03FC977CCBAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75ED45F2-3BC0-47F4-ABD8-DC65C2E35DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75ED45F2-3BC0-47F4-ABD8-DC65C2E35DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75ED45F2-3BC0-47F4-ABD8-DC65C2E35DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75ED45F2-3BC0-47F4-ABD8-DC65C2E35DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AA9CB796-7CAD-4B4C-B364-674B4D4F9243} = {B0D2EA56-6B4A-4E72-8A68-98C3011AA71A}
+		{7D268048-656E-4468-8214-03FC977CCBAF} = {B0D2EA56-6B4A-4E72-8A68-98C3011AA71A}
+		{75ED45F2-3BC0-47F4-ABD8-DC65C2E35DFA} = {B0D2EA56-6B4A-4E72-8A68-98C3011AA71A}
+	EndGlobalSection
+EndGlobal

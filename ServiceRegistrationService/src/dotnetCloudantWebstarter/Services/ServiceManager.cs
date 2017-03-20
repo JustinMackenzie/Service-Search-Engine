@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using dotnetCloudantWebstarter.Models;
-using dotnetCloudantWebstarter.Repositories;
+using YellowPages.Core.Entities;
+using YellowPages.Core.Repositories;
 
 namespace dotnetCloudantWebstarter.Services
 {

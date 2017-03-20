@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace dotnetCloudantWebstarter.Repositories
+namespace YellowPages.Infrastructure.CloudantRepositories
 {
     public class CloudantResponse<T>
     {

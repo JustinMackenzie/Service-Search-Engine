@@ -1,4 +1,4 @@
-namespace CloudantDotNet.Models
+namespace YellowPages.Infrastructure.CloudantRepositories
 {
     public class Creds
     {

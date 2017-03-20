@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using CloudantDotNet.Services;
+using YellowPages.Core.Repositories;
+using YellowPages.Infrastructure.CloudantRepositories;
+using YellowPages.ServiceSearchService.Services;
 
 namespace CloudantDotNet
 {
@@ -57,6 +60,8 @@ namespace CloudantDotNet
             };
             services.AddSingleton(typeof(CloudantDotNet.Models.Creds), creds);
             services.AddTransient<ICloudantService, CloudantService>();
+            services.AddTransient<IServiceRepository, CloudantServiceRepository>();
+            services.AddTransient<ISearchService, SearchService>();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

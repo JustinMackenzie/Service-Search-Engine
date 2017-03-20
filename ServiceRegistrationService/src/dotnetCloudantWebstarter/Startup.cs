@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,8 +7,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using CloudantDotNet.Services;
-using dotnetCloudantWebstarter.Repositories;
 using dotnetCloudantWebstarter.Services;
+using YellowPages.Core.Repositories;
+using YellowPages.Infrastructure.CloudantRepositories;
 
 namespace CloudantDotNet
 {
@@ -51,13 +53,13 @@ namespace CloudantDotNet
 
             // works with VCAP_SERVICES JSON value added to vcap-local.json when running locally,
             // and works with actual VCAP_SERVICES env var based on configuration set above when running in CF
-            var creds = new CloudantDotNet.Models.Creds()
+            var creds = new Creds()
             {
                 username = Configuration["cloudantNoSQLDB:0:credentials:username"],
                 password = Configuration["cloudantNoSQLDB:0:credentials:password"],
                 host = Configuration["cloudantNoSQLDB:0:credentials:host"]
             };
-            services.AddSingleton(typeof(CloudantDotNet.Models.Creds), creds);
+            services.AddSingleton(typeof(Creds), creds);
             services.AddTransient<ICloudantService, CloudantService>();
             services.AddTransient<IServiceRepository, CloudantServiceRepository>();
             services.AddTransient<IServiceManager, ServiceManager>();

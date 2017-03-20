@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace dotnetCloudantWebstarter.Repositories
+namespace YellowPages.Infrastructure.CloudantRepositories
 {
     public class CloudantValue
     {

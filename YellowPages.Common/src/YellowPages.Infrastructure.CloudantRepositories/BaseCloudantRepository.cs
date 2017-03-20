@@ -5,32 +5,32 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
-using CloudantDotNet.Models;
-using CloudantDotNet.Services;
-using dotnetCloudantWebstarter.Models;
 using Newtonsoft.Json;
+using YellowPages.Core.Entities;
+using YellowPages.Core.Repositories;
 
-namespace dotnetCloudantWebstarter.Repositories
+namespace YellowPages.Infrastructure.CloudantRepositories
 {
-    public class CloudantServiceRepository : IServiceRepository
+    public abstract class BaseCloudantRepository<T> : IRepository<T> where T : Entity
     {
-        private static readonly string _dbName = "services";
         private readonly Creds cloudantCreds;
         private readonly UrlEncoder urlEncoder;
 
-        public CloudantServiceRepository(Creds creds, UrlEncoder urlEncoder)
+        protected BaseCloudantRepository(Creds creds, UrlEncoder urlEncoder)
         {
             cloudantCreds = creds;
             this.urlEncoder = urlEncoder;
         }
 
-        public void Create(Service item)
-        {
-            CreateServiceRequest request = new CreateServiceRequest(item);
+        protected abstract string DatabaseName { get; }
 
+        protected abstract PostRequest CreatePostRequest(T item);
+
+        public void Create(T item)
+        {
             using (var client = CloudantClient())
             {
-                var response = client.PostAsJsonAsync(_dbName, request).Result;
+                var response = client.PostAsJsonAsync(DatabaseName, CreatePostRequest(item)).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return;
@@ -40,11 +40,11 @@ namespace dotnetCloudantWebstarter.Repositories
             }
         }
 
-        public void Delete(Service item)
+        public void Delete(T item)
         {
             using (var client = CloudantClient())
             {
-                var response = client.DeleteAsync(_dbName + "/" + urlEncoder.Encode(item.CloudantId) + "?rev=" + urlEncoder.Encode(item.Revision)).Result;
+                var response = client.DeleteAsync(DatabaseName + "/" + urlEncoder.Encode(item.CloudantId) + "?rev=" + urlEncoder.Encode(item.Revision)).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return;
@@ -54,16 +54,16 @@ namespace dotnetCloudantWebstarter.Repositories
             }
         }
 
-        public IEnumerable<Service> GetAll()
+        public IEnumerable<T> GetAll()
         {
             using (var client = CloudantClient())
             {
-                var response = client.GetAsync(_dbName + "/_all_docs?include_docs=true").Result;
+                var response = client.GetAsync(DatabaseName + "/_all_docs?include_docs=true").Result;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    CloudantResponse<Service> cloundantResponse =
-                        JsonConvert.DeserializeObject<CloudantResponse<Service>>(
+                    CloudantResponse<T> cloundantResponse =
+                        JsonConvert.DeserializeObject<CloudantResponse<T>>(
                             response.Content.ReadAsStringAsync().Result);
                     return cloundantResponse.Rows.Select(r => r.Item);
                 }
@@ -73,16 +73,16 @@ namespace dotnetCloudantWebstarter.Repositories
             }
         }
 
-        public Service Get(Guid id)
+        public T Get(Guid id)
         {
             return GetAll().FirstOrDefault(s => s.Id == id);
         }
 
-        public void Update(Service item)
+        public void Update(T item)
         {
             using (var client = CloudantClient())
             {
-                var response = client.PutAsJsonAsync(_dbName + "/" + urlEncoder.Encode(item.CloudantId) + "?rev=" + urlEncoder.Encode(item.Revision), item).Result;
+                var response = client.PutAsJsonAsync(DatabaseName + "/" + urlEncoder.Encode(item.CloudantId) + "?rev=" + urlEncoder.Encode(item.Revision), item).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     return;
@@ -101,7 +101,7 @@ namespace dotnetCloudantWebstarter.Repositories
 
             var auth = Convert.ToBase64String(Encoding.ASCII.GetBytes(cloudantCreds.username + ":" + cloudantCreds.password));
 
-            HttpClient client = HttpClientFactory.Create(new LoggingHandler());
+            HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://" + cloudantCreds.host);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -110,20 +110,7 @@ namespace dotnetCloudantWebstarter.Repositories
         }
     }
 
-    public class CreateServiceRequest
+    public class PostRequest
     {
-        private readonly Service item;
-
-        public CreateServiceRequest(Service item)
-        {
-            this.item = item;
-        }
-
-        public Guid Id => item.Id;
-        public Guid OrganizationId => item.OrganizationId;
-        public string Name => item.Name;
-        public string Description => item.Description;
-        public List<string> Tags => item.Tags;
-        public List<ServiceInput> Input => item.Input;
     }
 }

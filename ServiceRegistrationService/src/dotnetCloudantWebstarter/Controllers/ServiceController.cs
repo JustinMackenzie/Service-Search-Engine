@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using dotnetCloudantWebstarter.Models;
 using dotnetCloudantWebstarter.Services;
 using Microsoft.AspNetCore.Mvc;
+using YellowPages.Core.Entities;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 

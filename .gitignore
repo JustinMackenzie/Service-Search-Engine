@@ -253,3 +253,7 @@ paket-files/
 
 # Node Modules
 node_modules/
+
+.vscode
+
+.deployment

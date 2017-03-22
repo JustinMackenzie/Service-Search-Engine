@@ -1,0 +1,28 @@
+applications:
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: service-search-service
+  host: service-search-service
+  disk_quota: 1024M
+  services:
+  - service-search-service-cloudantNoSQLDB
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: service-invocation-service
+  host: service-invocation-service
+  disk_quota: 1024M
+  services:
+  - service-invocation-service-cloudantNoSQLDB
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: Service-Registration-Service
+  host: Service-Registration-Service
+  disk_quota: 1024M
+  services:
+  - Service-Registration-Service-cloudantNoSQLDB

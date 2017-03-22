@@ -1,6 +1,6 @@
 applications:
 - path: .
-  memory: 512M
+  memory: 256M
   instances: 1
   domain: mybluemix.net
   name: service-search-service
@@ -9,7 +9,7 @@ applications:
   services:
   - service-search-service-cloudantNoSQLDB
 - path: .
-  memory: 512M
+  memory: 256M
   instances: 1
   domain: mybluemix.net
   name: service-invocation-service

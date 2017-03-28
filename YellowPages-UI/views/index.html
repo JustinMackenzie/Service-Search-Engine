@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Yellow Pages</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="/scripts/util.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Yellow Pages</h1>
+        <div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#organizations" role="tab" data-toggle="tab">Organizations</a></li>
+                <li><a href="#serviceSearch" role="tab" data-toggle="tab">Service Search</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" data-bind="with: organizationTab" id="organizations">
+                    <div class="container">
+                        <h3>Organizations</h3>
+                        <div class="pull-right">
+                            <button class="btn btn-default" data-bind="click: displayAddOrgModal"><span class="glyphicion glyphicon-plus"></span></button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID (remove this for final)</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: orgList">
+                                <tr>
+                                    <td data-bind="text: id"></td>
+                                    <td data-bind="text: name"></td>
+                                    <td data-bind="text: description"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pull-right">
+                            <button class="btn btn-default" data-bind="click: displayAddOrgModal"><span class="glyphicion glyphicon-plus"></span></button>
+                        </div>
+                    </div>
+                    <div id="addOrgModal" class="modal fade" data-bind="with: addOrgModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-bind="click: closeAddOrgModal"><span>&times;</span></button>
+                                    <h4 class="modal-title">Add an Organization</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" data-bind="value: name" />
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control" data-bind="value: description" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { addOrg(name(), description()); }">Add</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeAddOrgModal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="serviceSearch">
+                    <div class="container">
+                        <h3>Service Search</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="/scripts/index.js"></script>

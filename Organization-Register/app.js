@@ -95,25 +95,13 @@ initDBConnection();
 
 app.get('/', routes.index);
 
-function createResponseData(id, name, description, attachments) {
+function createResponseData(id, name, description) {
 
     var responseData = {
         id: id,
         name: sanitizeInput(name),
-        description: sanitizeInput(description),
-        attachements: []
+        description: sanitizeInput(description)
     };
-
-
-    attachments.forEach(function(item, index) {
-        var attachmentData = {
-            content_type: item.type,
-            key: item.key,
-            url: '/api/organization-register/attach?id=' + id + '&key=' + item.key
-        };
-        responseData.attachements.push(attachmentData);
-
-    });
     return responseData;
 }
 
@@ -147,6 +135,7 @@ app.post('/api/organization-register', function (request, response) {
     console.log("Create Invoked..");
     console.log("Name: " + request.body.name);
     console.log("Description: " + request.body.description);
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     // var id = request.body.id;
     var name = sanitizeInput(request.body.name);
@@ -159,6 +148,7 @@ app.post('/api/organization-register', function (request, response) {
 app.delete('/api/organization-register', function (request, response) {
 
     console.log("Delete Invoked..");
+    response.setHeader('Access-Control-Allow-Origin', '*');
     var id = request.query.id;
     // var rev = request.query.rev; // Rev can be fetched from request. if
     // needed, send the rev from client
@@ -186,7 +176,7 @@ app.delete('/api/organization-register', function (request, response) {
 app.put('/api/organization-register', function (request, response) {
 
     console.log("Update Invoked..");
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
     var id = request.body.id;
     var name = sanitizeInput(request.body.name);
     var description = sanitizeInput(request.body.description);
@@ -217,7 +207,7 @@ app.put('/api/organization-register', function (request, response) {
 app.get('/api/organization-register', function (request, response) {
 
     console.log("Get method invoked...");
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
     var id = request.query.id;
 
     db.get(id, {
@@ -232,6 +222,7 @@ app.get('/api/organization-register', function (request, response) {
 app.get('/api/organization-register/getAllOrgs', function (request, response) {
 
     console.log("Get All Orgs method invoked.. ")
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     db = cloudant.use(dbCredentials.dbName);
     var docList = [];
@@ -239,86 +230,32 @@ app.get('/api/organization-register/getAllOrgs', function (request, response) {
     db.list(function(err, body) {
         if (!err) {
             var len = body.rows.length;
-            console.log('total # of docs -> ' + len);
-            if (len == 0) {
-                // push sample data
-                // save doc
-                var docName = 'sample_doc';
-                var docDesc = 'A sample Document';
-                db.insert({
-                    name: docName,
-                    value: 'A sample Document'
-                }, '', function(err, doc) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-
-                        console.log('Document : ' + JSON.stringify(doc));
+            body.rows.forEach(function(document) {
+                db.get(document.id, {
+                    revs_info: true
+                }, function(err, doc) {
+                    if (!err) {
                         var responseData = createResponseData(
-                            doc.id,
-                            docName,
-                            docDesc, []);
+                            doc._id,
+                            doc.name,
+                            doc.description);
+                            
                         docList.push(responseData);
-                        response.write(JSON.stringify(docList));
-                        console.log(JSON.stringify(docList));
-                        console.log('ending response...');
-                        response.end();
+                        i++;
+                        if (i >= len) {
+                            response.write(JSON.stringify(docList));
+                            console.log('ending response...');
+                            response.end();
+                        }
+                    } else {
+                        console.log(err);
                     }
                 });
-            } else {
-
-                body.rows.forEach(function(document) {
-
-                    db.get(document.id, {
-                        revs_info: true
-                    }, function(err, doc) {
-                        if (!err) {
-                            if (doc['_attachments']) {
-
-                                var attachments = [];
-                                for (var attribute in doc['_attachments']) {
-
-                                    if (doc['_attachments'][attribute] && doc['_attachments'][attribute]['content_type']) {
-                                        attachments.push({
-                                            "key": attribute,
-                                            "type": doc['_attachments'][attribute]['content_type']
-                                        });
-                                    }
-                                    console.log(attribute + ": " + JSON.stringify(doc['_attachments'][attribute]));
-                                }
-                                var responseData = createResponseData(
-                                    doc._id,
-                                    doc.name,
-                                    doc.description,
-                                    attachments);
-
-                            } else {
-                                var responseData = createResponseData(
-                                    doc._id,
-                                    doc.name,
-                                    doc.description, []);
-                            }
-
-                            docList.push(responseData);
-                            i++;
-                            if (i >= len) {
-                                response.write(JSON.stringify(docList));
-                                console.log('ending response...');
-                                response.end();
-                            }
-                        } else {
-                            console.log(err);
-                        }
-                    });
-
-                });
-            }
-
+            });
         } else {
             console.log(err);
         }
     });
-
 });
 
 

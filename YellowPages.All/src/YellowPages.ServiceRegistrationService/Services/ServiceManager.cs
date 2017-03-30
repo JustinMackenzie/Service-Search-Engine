@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YellowPages.Core.Entities;
 using YellowPages.Core.Repositories;
 
@@ -66,6 +67,16 @@ namespace dotnetCloudantWebstarter.Services
         {
             Service service = GetService(id);
             serviceRepository.Delete(service);
+        }
+
+        /// <summary>
+        /// Gets all services by organization.
+        /// </summary>
+        /// <param name="organizationId">The organization identifier.</param>
+        /// <returns></returns>
+        public IEnumerable<Service> GetAllServicesByOrganization(Guid organizationId)
+        {
+            return GetAllServices().Where(s => s.OrganizationId == organizationId);
         }
     }
 }

@@ -28,8 +28,11 @@ namespace dotnetCloudantWebstarter.Controllers
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<Service> Get()
+        public IEnumerable<Service> Get(Guid? organizationId)
         {
+            if (organizationId.HasValue)
+                return serviceManager.GetAllServicesByOrganization(organizationId.Value);
+
             return serviceManager.GetAllServices();
         }
 

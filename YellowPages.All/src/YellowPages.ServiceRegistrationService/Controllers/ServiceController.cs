@@ -42,9 +42,20 @@ namespace dotnetCloudantWebstarter.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Service value)
+        public void Post([FromBody]CreateServiceViewModel value)
         {
-            serviceManager.AddService(value);
+            Service service = new Service
+            {
+                Id = Guid.NewGuid(),
+                Description = value.Description,
+                Input = value.Input,
+                Name = value.Name,
+                OrganizationId = value.OrganizationId,
+                Tags = value.Tags,
+                Url = value.Url
+            };
+
+            serviceManager.AddService(service);
         }
 
         // PUT api/values/5

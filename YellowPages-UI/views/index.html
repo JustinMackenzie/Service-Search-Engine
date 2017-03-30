@@ -31,6 +31,7 @@
                                     <th>ID (remove this for final)</th>
                                     <th>Name</th>
                                     <th>Description</th>
+									<th></th>
                                 </tr>
                             </thead>
                             <tbody data-bind="foreach: orgList">
@@ -38,6 +39,19 @@
                                     <td data-bind="text: id"></td>
                                     <td data-bind="text: name"></td>
                                     <td data-bind="text: description"></td>
+									<td>
+										<div class="dropdown">
+											<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu">
+												<li><a href="#" data-bind="click: $parent.displayEditOrgModal">Edit Organization</a></li>
+												<li><a href="#" data-bind="click: $parent.displayAddServiceModal">Add Service</a></li>
+												<li class="divider"></li>
+												<li><a href="#" data-bind="click: $parent.displayRemoveOrgModal">Remove Organization</a></li>
+											</ul>
+										</div>
+									</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -50,7 +64,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-bind="click: closeAddOrgModal"><span>&times;</span></button>
-                                    <h4 class="modal-title">Add an Organization</h4>
+                                    <h4 class="modal-title">Add Organization</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="container-fluid">
@@ -69,6 +83,110 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" data-bind="click: function () { addOrg(name(), description()); }">Add</button>
                                     <button type="button" class="btn btn-default" data-bind="click: closeAddOrgModal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div id="editOrgModal" class="modal fade" data-bind="with: editOrgModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-bind="click: closeEditOrgModal"><span>&times;</span></button>
+                                    <h4 class="modal-title">Edit Organization</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" data-bind="value: name" />
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control" data-bind="value: description" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { editOrg(id(), name(), description()); }">Edit</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeEditOrgModal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div id="removeOrgModal" class="modal fade" data-bind="with: removeOrgModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-bind="click: closeRemoveOrgModal"><span>&times;</span></button>
+                                    <h4 class="modal-title">Remove Organization</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <span>Are you sure you wish to delete </span><span data-bind="text: name"></span><span>?</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { removeOrg(id()); }">Remove</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeRemoveOrgModal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div id="addServiceModal" class="modal fade" data-bind="with: addServiceModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-bind="click: closeAddServiceModal"><span>&times;</span></button>
+                                    <h4 class="modal-title">Add Service</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>ID (remove for final)</label>
+                                                <input type="text" class="form-control" data-bind="value: id" />
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Organization ID (remove for final)</label>
+
+												<span data-bind="text: orgId"></span>
+                                            </div>
+                                        </div>
+										<div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" data-bind="value: name" />
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control" data-bind="value: description" />
+                                            </div>
+                                        </div>
+										<div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Tags</label>
+												<div data-bind="foreach: { data: tags, as: 'tag' }">
+													<input type="text" class="form-control" data-bind="value: description" />
+													<button type="button" class="close" data-bind=""><span>&times;</span></button>
+												</div>
+												<div>
+													<button class="btn btn-default" data-bind=""><span class="glyphicion glyphicon-plus"></span></button>
+												</div>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Inputs</label>
+												<div data-bind="foreach: { data: inputs, as: 'input' }">
+													
+												</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { addService(id(), orgId(), name(), description(), tags(), inputs()); }">Edit</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeAddServiceModal">Cancel</button>
                                 </div>
                             </div>
                         </div>

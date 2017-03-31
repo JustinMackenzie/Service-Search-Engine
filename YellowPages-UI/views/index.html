@@ -3,6 +3,7 @@
 <head>
 	<title>Yellow Pages</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/organizationTab.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js"
             integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -34,11 +35,11 @@
 									<th></th>
                                 </tr>
                             </thead>
-                            <tbody data-bind="foreach: orgList">
+                            <tbody data-bind="foreach: { data: orgList, as: 'org' }">
                                 <tr>
-                                    <td data-bind="text: id"></td>
-                                    <td data-bind="text: name"></td>
-                                    <td data-bind="text: description"></td>
+                                    <td data-toggle="collapse" data-bind="text: org.id, attr: { 'data-target': '#serviceList' + $index()}"></td>
+                                    <td data-toggle="collapse" data-bind="text: org.name, attr: { 'data-target': '#serviceList' + $index()}"></td>
+                                    <td data-toggle="collapse" data-bind="text: org.description, attr: { 'data-target': '#serviceList' + $index()}"></td>
 									<td>
 										<div class="dropdown">
 											<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -52,6 +53,18 @@
 											</ul>
 										</div>
 									</td>
+                                </tr>
+                                <tr class="collapse" data-bind="attr: { id: 'serviceList' + $index()}">
+                                    <td colspan="4">
+                                        <table class="table" data-bind="foreach: { data: org.serviceList, as: 'service' }">
+                                            <tr>
+                                                <td data-bind="text: service.name"></td>
+                                                <td data-bind="text: service.description"></td>
+                                                <td><button class="btn btn-default" type="button" data-bind="click: $parent.displayEditServiceModal"><span class="glyphicion glyphicon-edit"></span></button></td>
+                                                <td><button class="btn btn-default" type="button" data-bind="click: $parent.displayRemoveServiceModal"><span class="glyphicion glyphicon-trash"></span></button></td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -144,13 +157,8 @@
                                 <div class="modal-body">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <label>ID (remove for final)</label>
-                                                <input type="text" class="form-control" data-bind="value: id" />
-                                            </div>
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-12 form-group">
                                                 <label>Organization ID (remove for final)</label>
-
 												<span data-bind="text: orgId"></span>
                                             </div>
                                         </div>
@@ -185,8 +193,79 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bind="click: function () { addService(id(), orgId(), name(), description(), tags(), inputs()); }">Edit</button>
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { addService(orgId(), name(), description(), tags(), inputs()); }">Edit</button>
                                     <button type="button" class="btn btn-default" data-bind="click: closeAddServiceModal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="editServiceModal" class="modal fade" data-bind="with: editServiceModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-bind="click: closeEditServiceModal"><span>&times;</span></button>
+                                    <h4 class="modal-title">Edit Service</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <label>Organization ID (remove for final)</label>
+                                                <span data-bind="text: orgId"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" data-bind="value: name" />
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control" data-bind="value: description" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Tags</label>
+                                                <div data-bind="foreach: { data: tags, as: 'tag' }">
+                                                    <input type="text" class="form-control" data-bind="value: description" />
+                                                    <button type="button" class="close" data-bind=""><span>&times;</span></button>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-default" data-bind=""><span class="glyphicion glyphicon-plus"></span></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Inputs</label>
+                                                <div data-bind="foreach: { data: inputs, as: 'input' }">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { editService(id(), orgId(), name(), description(), tags(), inputs()); }">Edit</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeEditServiceModal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="removeServiceModal" class="modal fade" data-bind="with: removeServiceModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-bind="click: closeRemoveServiceModal"><span>&times;</span></button>
+                                    <h4 class="modal-title">Remove Service</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <span>Are you sure you wish to delete </span><span data-bind="text: name"></span><span>?</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { removeService(id()); }">Remove</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeRemoveServiceModal">Cancel</button>
                                 </div>
                             </div>
                         </div>

@@ -8,11 +8,50 @@ var YellowPages = function () {
     // Tab definitions
     self.organizationTab = (function () {
         var orgList = ko.observableArray();
+
+        var loadServicesForOrg = function (org) {
+            var onSuccess = function (services) {
+                services.forEach(function (service) {
+                    service.orgId = service.organizationId;
+                    service.organizationId = undefined;
+                    service.inputs = service.input;
+                    service.input = undefined;
+                    org.serviceList.push(service);
+                });
+            };
+            var onError = function () {
+                var service = {
+                    "orgId": "be4d234e-efde-49a1-bd53-ab2baf0d0722",
+                    "name": "Example Service 2",
+                    "description": "A test service 2",
+                    "tags": [
+                      "tag 1",
+                      "tag 2"
+                    ],
+                    "inputs": [
+                      {
+                          "name": "start",
+                          "type": "Date"
+                      },
+                      {
+                          "name": "end",
+                          "type": "Date"
+                      }
+                    ]
+                }
+                org.serviceList.push(service);
+                //alert('Could not load services');
+            };
+            xhrGet(serviceRegisterApi + '?organizationId=' + org.id, onSuccess, onError);
+        };
         var loadOrganizationList = function () {
             var onSuccess = function (organizations) {
                 console.log(organizations);
+                self.organizationTab.orgList.removeAll();
                 organizations.forEach(function (organization) {
+                    organization.serviceList = ko.observableArray([]);
                     self.organizationTab.orgList.push(organization);
+                    self.organizationTab.loadServicesForOrg(organization);
                 });
             };
             var onError = function () {
@@ -54,14 +93,13 @@ var YellowPages = function () {
 
                 xhrPost(orgRegisterApi, params, onSuccess, onError);
             };
-			
 
-            var exports = {};
-            exports.name = name;
-            exports.description = description;
-            exports.closeAddOrgModal = closeAddOrgModal;
-            exports.addOrg = addOrg;
-            return exports;
+            var addOrgModal = {};
+            addOrgModal.name = name;
+            addOrgModal.description = description;
+            addOrgModal.closeAddOrgModal = closeAddOrgModal;
+            addOrgModal.addOrg = addOrg;
+            return addOrgModal;
         }());
 		
 		var displayEditOrgModal = function (org) {
@@ -95,13 +133,13 @@ var YellowPages = function () {
 				xhrPut(orgRegisterApi, params, onSuccess, onError);
 			};
 			
-			var exports = {};
-			exports.id = id;
-            exports.name = name;
-            exports.description = description;
-            exports.closeEditOrgModal = closeEditOrgModal;
-            exports.editOrg = editOrg;
-            return exports;
+			var editOrgModal = {};
+			editOrgModal.id = id;
+			editOrgModal.name = name;
+			editOrgModal.description = description;
+			editOrgModal.closeEditOrgModal = closeEditOrgModal;
+			editOrgModal.editOrg = editOrg;
+			return editOrgModal;
 		}());
 		
 		var displayRemoveOrgModal = function (org) {
@@ -127,16 +165,15 @@ var YellowPages = function () {
 				};
 				xhrDelete(orgRegisterApi + '?id=' + id, onSuccess, onError);
 			};
-			var exports = {};
-			exports.id = id;
-			exports.name = name;
-			exports.closeRemoveOrgModal = closeRemoveOrgModal;
-			exports.removeOrg = removeOrg;
-			return exports;
+			var removeOrgModal = {};
+			removeOrgModal.id = id;
+			removeOrgModal.name = name;
+			removeOrgModal.closeRemoveOrgModal = closeRemoveOrgModal;
+			removeOrgModal.removeOrg = removeOrg;
+			return removeOrgModal;
 		}());
 		
 		var clearAddServiceModal = function () {
-			self.organizationTab.addServiceModal.id('');
 			self.organizationTab.addServiceModal.orgId('');
 			self.organizationTab.addServiceModal.name('');
 			self.organizationTab.addServiceModal.description('');
@@ -151,7 +188,6 @@ var YellowPages = function () {
 		};
 		
 		var addServiceModal = (function () {
-			var id = ko.observable('');
 			var orgId = ko.observable('');
 			var name = ko.observable('');
 			var description = ko.observable('');
@@ -161,9 +197,8 @@ var YellowPages = function () {
 			var closeAddServiceModal = function () {
 				$('#addServiceModal').modal('hide');
 			};
-			var addService = function (id, orgId, name, description, tags, inputs) {
+			var addService = function (orgId, name, description, tags, inputs) {
 				var params = {
-					id: id,
 					organizationId: orgId,
 					name: name,
 					description: description,
@@ -181,31 +216,131 @@ var YellowPages = function () {
 				//xhrPost(serviceRegisterApi, params, onSuccess, onError);
 			};
 			
-			var exports = {};
-			exports.id = id;
-			exports.orgId = orgId;
-			exports.name = name;
-			exports.description = description;
-			exports.tags = tags;
-			exports.inputs = inputs;
-			exports.closeAddServiceModal = closeAddServiceModal;
-			exports.addService = addService;
-			return exports;
+			var addServiceModal = {};
+			addServiceModal.orgId = orgId;
+			addServiceModal.name = name;
+			addServiceModal.description = description;
+			addServiceModal.tags = tags;
+			addServiceModal.inputs = inputs;
+			addServiceModal.closeAddServiceModal = closeAddServiceModal;
+			addServiceModal.addService = addService;
+			return addServiceModal;
 		}());
 
-        var exports = {};
-        exports.orgList = orgList;
-        exports.loadOrganizationList = loadOrganizationList;
-        exports.displayAddOrgModal = displayAddOrgModal;
-        exports.addOrgModal = addOrgModal;
-		exports.displayEditOrgModal = displayEditOrgModal;
-		exports.editOrgModal = editOrgModal;
-		exports.displayRemoveOrgModal = displayRemoveOrgModal;
-		exports.removeOrgModal = removeOrgModal;
-		exports.displayAddServiceModal = displayAddServiceModal;
-		exports.clearAddServiceModal = clearAddServiceModal;
-		exports.addServiceModal = addServiceModal;
-        return exports;
+		var setEditServiceModal = function (service) {
+		    self.organizationTab.editServiceModal.id(service.id);
+		    self.organizationTab.editServiceModal.orgId(service.orgId);
+		    self.organizationTab.editServiceModal.name(service.name);
+		    self.organizationTab.editServiceModal.description(service.description);
+		    self.organizationTab.editServiceModal.tags(service.tags);
+		    self.organizationTab.editServiceModal.inputs(service.inputs);
+		};
+
+		var displayEditServiceModal = function (service) {
+		    self.organizationTab.setEditServiceModal(service);
+		    $('#editServiceModal').modal('show');
+		};
+
+		var editServiceModal = (function () {
+		    var id = ko.observable('');
+		    var orgId = ko.observable('');
+		    var name = ko.observable('');
+		    var description = ko.observable('');
+		    var tags = ko.observableArray([]);
+		    var inputs = ko.observableArray([]);
+
+		    var closeEditServiceModal = function () {
+		        $('#editServiceModal').modal('hide');
+		    };
+
+		    var editService = function (id, orgId, name, description, tags, inputs) {
+		        var params = {
+		            organizationId: orgId,
+		            name: name,
+		            description: description,
+		            tags: tags,
+                    input: inputs
+		        };
+		        var onSuccess = function () {
+		            alert('Successfully editted service!');
+		            self.organizationTab.editServiceModal.closeEditServiceModal();
+		            self.organizationTab.loadOrganizationList();
+		        };
+		        var onError = function () {
+		            alert('Could not edit service.');
+		        };
+		        xhrPut(serviceRegisterApi, params, onSuccess, onError);
+		    };
+
+		    var editServiceModal = {};
+		    editServiceModal.id = id;
+		    editServiceModal.orgId = orgId;
+		    editServiceModal.name = name;
+		    editServiceModal.description = description;
+		    editServiceModal.tags = tags;
+		    editServiceModal.inputs = inputs;
+		    editServiceModal.closeEditServiceModal = closeEditServiceModal;
+		    return editServiceModal;
+		}());
+
+		var setRemoveServiceModal = function (service) {
+		    self.organizationTab.removeServiceModal.id(service.id);
+		    self.organizationTab.removeServiceModal.name(service.name);
+		};
+
+		var displayRemoveServiceModal = function (service) {
+		    self.organizationTab.setRemoveServiceModal(service);
+		    $('#removeServiceModal').modal('show');
+		};
+
+		var removeServiceModal = (function () {
+		    var id = ko.observable('');
+		    var name = ko.observable('');
+
+		    var closeRemoveServiceModal = function () {
+		        $('#removeServiceModal').modal('hide');
+		    };
+
+		    var removeService = function (id) {
+		        var onSuccess = function () {
+		            alert('Successfully removed service!');
+		            self.organizationTab.removeServiceModal.closeRemoveServiceModal();
+		            self.organizationTab.loadOrganizationList();
+		        };
+		        var onError = function () {
+		            alert('Failed to remove service.');
+		        };
+		        xhrDelete(serviceRegisterApi + '?id=' + id, onSuccess, onError);
+		    };
+
+		    var removeServiceModal = {};
+		    removeServiceModal.id = id;
+		    removeServiceModal.name = name;
+		    removeServiceModal.closeRemoveServiceModal = closeRemoveServiceModal;
+		    removeServiceModal.removeService = removeService;
+		    return removeServiceModal;
+		}());
+
+		var organizationTab = {};
+		organizationTab.orgList = orgList;
+		organizationTab.loadOrganizationList = loadOrganizationList;
+		organizationTab.loadServicesForOrg = loadServicesForOrg;
+		organizationTab.displayAddOrgModal = displayAddOrgModal;
+		organizationTab.addOrgModal = addOrgModal;
+		organizationTab.displayEditOrgModal = displayEditOrgModal;
+		organizationTab.editOrgModal = editOrgModal;
+		organizationTab.displayRemoveOrgModal = displayRemoveOrgModal;
+		organizationTab.removeOrgModal = removeOrgModal;
+		organizationTab.displayAddServiceModal = displayAddServiceModal;
+		organizationTab.clearAddServiceModal = clearAddServiceModal;
+		organizationTab.addServiceModal = addServiceModal;
+		organizationTab.displayEditServiceModal = displayEditServiceModal;
+		organizationTab.setEditServiceModal = setEditServiceModal;
+		organizationTab.editServiceModal = editServiceModal;
+		organizationTab.setRemoveServiceModal = setRemoveServiceModal;
+		organizationTab.removeServiceModal = removeServiceModal;
+
+		return organizationTab;
     }());
 
     self.serviceSearchTab = (function () {

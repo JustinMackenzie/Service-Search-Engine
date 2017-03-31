@@ -1,0 +1,4 @@
+﻿.collapsing {
+    -webkit-transition: none;
+    transition: height 0.01s;
+}

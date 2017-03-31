@@ -42,6 +42,25 @@ app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/style', express.static(path.join(__dirname, '/views/style')));
 
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
 // development only
 if ('development' == app.get('env')) {
     app.use(errorHandler());
@@ -135,7 +154,6 @@ app.post('/api/organization-register', function (request, response) {
     console.log("Create Invoked..");
     console.log("Name: " + request.body.name);
     console.log("Description: " + request.body.description);
-    response.setHeader('Access-Control-Allow-Origin', '*');
 
     // var id = request.body.id;
     var name = sanitizeInput(request.body.name);
@@ -148,7 +166,6 @@ app.post('/api/organization-register', function (request, response) {
 app.delete('/api/organization-register', function (request, response) {
 
     console.log("Delete Invoked..");
-    response.setHeader('Access-Control-Allow-Origin', '*');
     var id = request.query.id;
     // var rev = request.query.rev; // Rev can be fetched from request. if
     // needed, send the rev from client
@@ -176,7 +193,6 @@ app.delete('/api/organization-register', function (request, response) {
 app.put('/api/organization-register', function (request, response) {
 
     console.log("Update Invoked..");
-    response.setHeader('Access-Control-Allow-Origin', '*');
     var id = request.body.id;
     var name = sanitizeInput(request.body.name);
     var description = sanitizeInput(request.body.description);
@@ -207,7 +223,6 @@ app.put('/api/organization-register', function (request, response) {
 app.get('/api/organization-register', function (request, response) {
 
     console.log("Get method invoked...");
-    response.setHeader('Access-Control-Allow-Origin', '*');
     var id = request.query.id;
 
     db.get(id, {
@@ -222,7 +237,6 @@ app.get('/api/organization-register', function (request, response) {
 app.get('/api/organization-register/getAllOrgs', function (request, response) {
 
     console.log("Get All Orgs method invoked.. ")
-    response.setHeader('Access-Control-Allow-Origin', '*');
 
     db = cloudant.use(dbCredentials.dbName);
     var docList = [];

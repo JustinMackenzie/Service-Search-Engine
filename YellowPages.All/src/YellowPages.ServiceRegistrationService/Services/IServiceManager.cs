@@ -39,5 +39,12 @@ namespace dotnetCloudantWebstarter.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         void RemoveService(Guid id);
+
+        /// <summary>
+        /// Gets all services by organization.
+        /// </summary>
+        /// <param name="organizationId">The organization identifier.</param>
+        /// <returns></returns>
+        IEnumerable<Service> GetAllServicesByOrganization(Guid organizationId);
     }
 }

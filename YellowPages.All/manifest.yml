@@ -18,7 +18,7 @@ applications:
   services:
   - service-invocation-service-cloudantNoSQLDB
 - path: .
-  memory: 512M
+  memory: 256M
   instances: 1
   domain: mybluemix.net
   name: Service-Registration-Service

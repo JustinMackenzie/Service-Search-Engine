@@ -49,7 +49,12 @@ namespace CloudantDotNet
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            });
+            services.AddMvc();   
 
             // works with VCAP_SERVICES JSON value added to vcap-local.json when running locally,
             // and works with actual VCAP_SERVICES env var based on configuration set above when running in CF
@@ -67,6 +72,7 @@ namespace CloudantDotNet
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
+            app.UseCors("AllowAll");
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();

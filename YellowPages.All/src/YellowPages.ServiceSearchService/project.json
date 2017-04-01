@@ -29,7 +29,8 @@
       "YellowPages.Core.Entities": "1.0.0-*",
       "YellowPages.Core.Repositories": "1.0.0-*",
       "YellowPages.Infrastructure.CloudantRepositories": "1.0.0-*",
-      "YellowPages.Infrastructure.ApiRepositories": "1.0.0-*"
+      "YellowPages.Infrastructure.ApiRepositories": "1.0.0-*",
+      "Microsoft.AspNetCore.Cors": "1.0.1"
     },
 
     "frameworks": {

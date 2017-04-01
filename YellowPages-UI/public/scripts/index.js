@@ -345,16 +345,20 @@ var YellowPages = function () {
     }());
 
     self.serviceSearchTab = (function () {
+		var keywords = ko.observable('');
+		var serviceResults = ko.observableArray();
+		var hasSearched = ko.observable(false);
 
-		self.keywords = ko.observable('');
-
-        // Add Service Search tab functions here
-
-		self.searchForService = (function (keywords){
+		var searchForService = (function (keywords){
 			var params = {
 				keywords: keywords
 			};
 			var onSuccess = function (services) {
+				self.serviceSearchTab.serviceResults.removeAll();
+				services.forEach(function (service) {
+                    self.serviceSearchTab.serviceResults.push(service);
+                });
+				self.serviceSearchTab.hasSearched(true);
 			};
 			var onError = function () {
 				alert('Failed to search for services.');
@@ -362,8 +366,12 @@ var YellowPages = function () {
 			xhrPostJson(serviceSearchApi, params, onSuccess, onError);
 		});
 
-        var exports = {};
-        return exports;
+        var serviceSearchTab = {};
+		serviceSearchTab.keywords = keywords;
+		serviceSearchTab.searchForService = searchForService;
+		serviceSearchTab.serviceResults = serviceResults;
+		serviceSearchTab.hasSearched = hasSearched;
+        return serviceSearchTab;
     }());
 
     self.organizationTab.loadOrganizationList(); // Immediately load the organization list

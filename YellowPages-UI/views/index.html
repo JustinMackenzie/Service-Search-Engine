@@ -271,7 +271,7 @@
                         </div>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="serviceSearch">
+                <div role="tabpanel" class="tab-pane" data-bind="with: serviceSearchTab" id="serviceSearch">
                     <div class="container">
                         <h3>Service Search</h3>
                         <div class="row">
@@ -279,8 +279,17 @@
                                 <input type="text" class="form-control" data-bind="value: keywords" />
                             </div>
                             <div class="col-md-6 form-group">
-                                <button class="btn btn-default" data-bind="click: function() { searchForService(keywords()) }"><span class="glyphicion glyphicon-search"></span></button>
+                                <button class="btn btn-default" data-bind="click: function() { searchForService(keywords()) }"><span class="glyphicon glyphicon-search"></span></button>
                             </div>
+                        </div>
+                        <div class="row">
+                        <h4 data-bind="visible: serviceResults().length == 0 && hasSearched()">Sorry we could not find any services matching your search...</h4>
+                        <ul class="list-unstyled" data-bind="foreach: { data: serviceResults, as: 'serv' }">
+                            <li>
+                                <h4 data-bind="text: serv.name"></h4>
+                                <p data-bind="text: serv.description" />
+                            </li>
+                        </ul>
                         </div>
                     </div>
                 </div>

@@ -199,7 +199,23 @@ var YellowPages = function () {
 				$('#addServiceModal').modal('hide');
 			};
 			var addService = function (orgId, name, description, tags, inputs) {
-				var params = {
+			    tags = tags.map(function (tag) {
+			        return '' + tag.tag();
+			    });
+			    tags.filter(function (tag) {
+			        return !!tag;
+			    });
+
+			    inputs = inputs.map(function (input) {
+			        input.name = '' + input.name();
+			        input.type = '' + input.type();
+			        return input;
+			    });
+			    inputs.filter(function (input) {
+			        return !!input.name && !!input.type;
+			    });
+
+			    var params = {
 					organizationId: orgId,
 					name: name,
 					description: description,
@@ -216,7 +232,28 @@ var YellowPages = function () {
 				};
 				//xhrPost(serviceRegisterApi, params, onSuccess, onError);
 			};
+
+			var addTag = function () {
+			    self.organizationTab.addServiceModal.tags.push({
+                    tag: ko.observable('')
+			    });
+			};
+
+			var removeTag = function (index) {
+			    self.organizationTab.addServiceModal.tags.splice(index, 1);
+			};
 			
+			var addInput = function () {
+			    self.organizationTab.addServiceModal.inputs.push({
+			        name: ko.observable(''),
+                    type: ko.observable('')
+			    });
+			};
+
+			var removeInput = function (index) {
+			    self.organizationTab.addServiceModal.inputs.splice(index, 1);
+			};
+
 			var addServiceModal = {};
 			addServiceModal.orgId = orgId;
 			addServiceModal.name = name;
@@ -225,6 +262,10 @@ var YellowPages = function () {
 			addServiceModal.inputs = inputs;
 			addServiceModal.closeAddServiceModal = closeAddServiceModal;
 			addServiceModal.addService = addService;
+			addServiceModal.addTag = addTag;
+			addServiceModal.removeTag = removeTag;
+			addServiceModal.addInput = addInput;
+			addServiceModal.removeInput = removeInput;
 			return addServiceModal;
 		}());
 
@@ -255,6 +296,22 @@ var YellowPages = function () {
 		    };
 
 		    var editService = function (id, orgId, name, description, tags, inputs) {
+		        tags = tags.map(function (tag) {
+		            return '' + tag.tag();
+		        });
+		        tags.filter(function (tag) {
+		            return !!tag;
+		        });
+
+		        inputs = inputs.map(function (input) {
+		            input.name = '' + input.name();
+		            input.type = '' + input.type();
+		            return input;
+		        });
+		        inputs.filter(function (input) {
+		            return !!input.name && !!input.type;
+		        });
+
 		        var params = {
 		            organizationId: orgId,
 		            name: name,
@@ -273,6 +330,27 @@ var YellowPages = function () {
 		        xhrPut(serviceRegisterApi, params, onSuccess, onError);
 		    };
 
+		    var addTag = function () {
+		        self.organizationTab.editServiceModal.tags.push({
+		            tag: ko.observable('')
+		        });
+		    };
+
+		    var removeTag = function (index) {
+		        self.organizationTab.editServiceModal.tags.splice(index, 1);
+		    };
+
+		    var addInput = function () {
+		        self.organizationTab.editServiceModal.inputs.push({
+		            name: ko.observable(''),
+		            type: ko.observable('')
+		        });
+		    };
+
+		    var removeInput = function (index) {
+		        self.organizationTab.editServiceModal.inputs.splice(index, 1);
+		    };
+
 		    var editServiceModal = {};
 		    editServiceModal.id = id;
 		    editServiceModal.orgId = orgId;
@@ -281,6 +359,10 @@ var YellowPages = function () {
 		    editServiceModal.tags = tags;
 		    editServiceModal.inputs = inputs;
 		    editServiceModal.closeEditServiceModal = closeEditServiceModal;
+		    editServiceModal.addTag = addTag;
+		    editServiceModal.removeTag = removeTag;
+		    editServiceModal.addInput = addInput;
+		    editServiceModal.removeInput = removeInput;
 		    return editServiceModal;
 		}());
 

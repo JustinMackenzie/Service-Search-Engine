@@ -45,7 +45,7 @@ namespace YellowPages.ServiceSearchService.Services
         {
             foreach (string keyword in keywords)
             {
-                if (service.Tags.Contains(keyword, StringComparer.CurrentCultureIgnoreCase))
+                if (service.Tags != null && service.Tags.Contains(keyword, StringComparer.CurrentCultureIgnoreCase))
                     return true;
             }
 

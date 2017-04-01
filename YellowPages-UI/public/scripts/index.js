@@ -4,7 +4,8 @@ var YellowPages = function () {
     // API shortforms
     var orgRegisterApi = 'https://organization-registration-service.mybluemix.net/api/organization-register';
 	var serviceRegisterApi = 'https://service-registration-service.mybluemix.net/api/service';
-    
+    var serviceSearchApi = 'https://service-search-service.mybluemix.net/api/search';
+
     // Tab definitions
     self.organizationTab = (function () {
         var orgList = ko.observableArray();
@@ -344,9 +345,22 @@ var YellowPages = function () {
     }());
 
     self.serviceSearchTab = (function () {
+
+		self.keywords = ko.observable('');
+
         // Add Service Search tab functions here
 
-
+		self.searchForService = (function (keywords){
+			var params = {
+				keywords: keywords
+			};
+			var onSuccess = function (services) {
+			};
+			var onError = function () {
+				alert('Failed to search for services.');
+			};
+			xhrPostJson(serviceSearchApi, params, onSuccess, onError);
+		});
 
         var exports = {};
         return exports;

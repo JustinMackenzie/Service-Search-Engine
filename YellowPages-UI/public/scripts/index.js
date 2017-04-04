@@ -92,7 +92,7 @@ var YellowPages = function () {
                     alert('Failed to add organization.');
                 };
 
-                xhrPost(orgRegisterApi, params, onSuccess, onError, "application/x-www-form-urlencoded");
+                xhrPost(orgRegisterApi, params, onSuccess, onError);
             };
 
             var addOrgModal = {};
@@ -229,7 +229,7 @@ var YellowPages = function () {
 				var onError = function () {
 					alert('Failed to add service.');
 				};
-				xhrPost(serviceRegisterApi, params, onSuccess, onError, 'application/json');
+				xhrPostJson(serviceRegisterApi, params, onSuccess, onError);
 			};
 
 			var addTag = function () {

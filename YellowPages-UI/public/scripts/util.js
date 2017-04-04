@@ -67,7 +67,7 @@ function xhrAttach(url, data, callback, errback)
 	xhr.send(data);
 }
 
-function xhrPost(url, data, callback, errback, contentType){
+function xhrPost(url, data, callback, errback){
 	var xhr = new createXHR();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", contentType);
@@ -82,11 +82,7 @@ function xhrPost(url, data, callback, errback, contentType){
 	};
 	xhr.timeout = 100000;
 	xhr.ontimeout = errback;
-	if (contentType === 'application/json') {
-	    xhr.send(data);
-	} else {
-	    xhr.send(objectToQuery(data));
-	}
+	xhr.send(objectToQuery(data));
 }
 
 function xhrPostJson(url, data, callback, errback){

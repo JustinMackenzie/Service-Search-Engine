@@ -47,6 +47,19 @@ var YellowPages = function () {
         };
         var loadOrganizationList = function () {
             var onSuccess = function (organizations) {
+                organizations.sort(function (a, b) {
+                    var nameA = a.name.toUpperCase(); 
+                    var nameB = b.name.toUpperCase(); 
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+
+                    return 0;
+                });
+                
                 console.log(organizations);
                 self.organizationTab.orgList.removeAll();
                 organizations.forEach(function (organization) {
@@ -103,7 +116,7 @@ var YellowPages = function () {
             return addOrgModal;
         }());
 		
-		var displayEditOrgModal = function (org) {
+        var displayEditOrgModal = function (org) {
 			self.organizationTab.editOrgModal.id(org.id);
 			self.organizationTab.editOrgModal.name(org.name);
 			self.organizationTab.editOrgModal.description(org.description);
@@ -273,8 +286,8 @@ var YellowPages = function () {
 		    self.organizationTab.editServiceModal.orgId(service.orgId);
 		    self.organizationTab.editServiceModal.name(service.name);
 		    self.organizationTab.editServiceModal.description(service.description);
-		    self.organizationTab.editServiceModal.tags(service.tags);
-		    self.organizationTab.editServiceModal.inputs(service.inputs);
+		    self.organizationTab.editServiceModal.tags(service.tags.slice());
+		    self.organizationTab.editServiceModal.inputs(service.inputs.slice());
 		};
 
 		var displayEditServiceModal = function (service) {
@@ -326,7 +339,7 @@ var YellowPages = function () {
 		        var onError = function () {
 		            alert('Could not edit service.');
 		        };
-		        xhrPut(serviceRegisterApi, params, onSuccess, onError);
+		        xhrPutJson(serviceRegisterApi + '/' + id, params, onSuccess, onError);
 		    };
 
 		    var addTag = function () {
@@ -362,6 +375,7 @@ var YellowPages = function () {
 		    editServiceModal.removeTag = removeTag;
 		    editServiceModal.addInput = addInput;
 		    editServiceModal.removeInput = removeInput;
+		    editServiceModal.editService = editService;
 		    return editServiceModal;
 		}());
 
@@ -392,7 +406,7 @@ var YellowPages = function () {
 		        var onError = function () {
 		            alert('Failed to remove service.');
 		        };
-		        xhrDelete(serviceRegisterApi + '?id=' + id, onSuccess, onError);
+		        xhrDelete(serviceRegisterApi + '/' + id, onSuccess, onError);
 		    };
 
 		    var removeServiceModal = {};
@@ -419,6 +433,7 @@ var YellowPages = function () {
 		organizationTab.displayEditServiceModal = displayEditServiceModal;
 		organizationTab.setEditServiceModal = setEditServiceModal;
 		organizationTab.editServiceModal = editServiceModal;
+		organizationTab.displayRemoveServiceModal = displayRemoveServiceModal;
 		organizationTab.setRemoveServiceModal = setRemoveServiceModal;
 		organizationTab.removeServiceModal = removeServiceModal;
 

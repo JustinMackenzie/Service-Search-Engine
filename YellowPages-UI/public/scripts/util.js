@@ -48,6 +48,25 @@ function xhrPut(url, data, callback, errback){
 	xhr.send(objectToQuery(data));
 }
 
+function xhrPutJson(url, data, callback, errback) {
+    var xhr = new createXHR();
+    xhr.open("PUT", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                callback();
+            } else {
+                errback('service not available');
+            }
+        }
+    };
+    xhr.timeout = 100000;
+    xhr.ontimeout = errback;
+    xhr.send(JSON.stringify(data));
+}
+
+
 function xhrAttach(url, data, callback, errback)
 {
 	var xhr = new createXHR();
@@ -70,11 +89,11 @@ function xhrAttach(url, data, callback, errback)
 function xhrPost(url, data, callback, errback){
 	var xhr = new createXHR();
 	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", contentType);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4){
 		    if (xhr.status == 200) {
-		        //xhr.responseText && callback(parseJson(xhr.responseText));
+		        callback();
 			}else{
 				errback('service not available');
 			}
@@ -92,7 +111,11 @@ function xhrPostJson(url, data, callback, errback){
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4){
 		    if (xhr.status == 200) {
-		        xhr.responseText && callback(parseJson(xhr.responseText));
+		        if (xhr.responseText) {
+		            callback(parseJson(xhr.responseText));
+		        } else {
+		            callback();
+		        }
 			}else{
 				errback('service not available');
 			}

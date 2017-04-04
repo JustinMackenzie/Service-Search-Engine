@@ -60,7 +60,6 @@ var YellowPages = function () {
                     return 0;
                 });
                 
-                console.log(organizations);
                 self.organizationTab.orgList.removeAll();
                 organizations.forEach(function (organization) {
                     organization.serviceList = ko.observableArray([]);
@@ -222,8 +221,7 @@ var YellowPages = function () {
 			        input.name = '' + input.name();
 			        input.type = '' + input.type();
 			        return input;
-			    });
-			    inputs.filter(function (input) {
+			    }).filter(function (input) {
 			        return !!input.name && !!input.type;
 			    });
 
@@ -286,8 +284,14 @@ var YellowPages = function () {
 		    self.organizationTab.editServiceModal.orgId(service.orgId);
 		    self.organizationTab.editServiceModal.name(service.name);
 		    self.organizationTab.editServiceModal.description(service.description);
-		    self.organizationTab.editServiceModal.tags(service.tags.slice());
-		    self.organizationTab.editServiceModal.inputs(service.inputs.slice());
+		    self.organizationTab.editServiceModal.tags.removeAll();
+		    self.organizationTab.editServiceModal.inputs.removeAll();
+		    service.tags.forEach(function (tag) {
+		        self.organizationTab.editServiceModal.tags.push({ tag: ko.observable(tag) });
+		    });
+		    service.inputs.forEach(function (input) {
+		        self.organizationTab.editServiceModal.inputs.push({ name: ko.observable(input.name), type: ko.observable(input.type) });
+		    });
 		};
 
 		var displayEditServiceModal = function (service) {
@@ -310,8 +314,7 @@ var YellowPages = function () {
 		    var editService = function (id, orgId, name, description, tags, inputs) {
 		        tags = tags.map(function (tag) {
 		            return '' + tag.tag();
-		        });
-		        tags.filter(function (tag) {
+		        }).filter(function (tag) {
 		            return !!tag;
 		        });
 
@@ -319,8 +322,7 @@ var YellowPages = function () {
 		            input.name = '' + input.name();
 		            input.type = '' + input.type();
 		            return input;
-		        });
-		        inputs.filter(function (input) {
+		        }).filter(function (input) {
 		            return !!input.name && !!input.type;
 		        });
 

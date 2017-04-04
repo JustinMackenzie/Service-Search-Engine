@@ -92,7 +92,7 @@ var YellowPages = function () {
                     alert('Failed to add organization.');
                 };
 
-                xhrPost(orgRegisterApi, params, onSuccess, onError);
+                xhrPost(orgRegisterApi, params, onSuccess, onError, "application/x-www-form-urlencoded");
             };
 
             var addOrgModal = {};
@@ -201,8 +201,7 @@ var YellowPages = function () {
 			var addService = function (orgId, name, description, tags, inputs) {
 			    tags = tags.map(function (tag) {
 			        return '' + tag.tag();
-			    });
-			    tags.filter(function (tag) {
+			    }).filter(function (tag) {
 			        return !!tag;
 			    });
 
@@ -230,7 +229,7 @@ var YellowPages = function () {
 				var onError = function () {
 					alert('Failed to add service.');
 				};
-				//xhrPost(serviceRegisterApi, params, onSuccess, onError);
+				xhrPost(serviceRegisterApi, params, onSuccess, onError, 'application/json');
 			};
 
 			var addTag = function () {

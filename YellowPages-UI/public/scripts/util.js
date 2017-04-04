@@ -67,14 +67,14 @@ function xhrAttach(url, data, callback, errback)
 	xhr.send(data);
 }
 
-function xhrPost(url, data, callback, errback){
+function xhrPost(url, data, callback, errback, contentType){
 	var xhr = new createXHR();
 	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.setRequestHeader("Content-type", contentType);
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4){
 		    if (xhr.status == 200) {
-		        xhr.responseText && callback(parseJson(xhr.responseText));
+		        //xhr.responseText && callback(parseJson(xhr.responseText));
 			}else{
 				errback('service not available');
 			}
@@ -82,7 +82,11 @@ function xhrPost(url, data, callback, errback){
 	};
 	xhr.timeout = 100000;
 	xhr.ontimeout = errback;
-	xhr.send(objectToQuery(data));
+	if (contentType === 'application/json') {
+	    xhr.send(data);
+	} else {
+	    xhr.send(objectToQuery(data));
+	}
 }
 
 function xhrPostJson(url, data, callback, errback){

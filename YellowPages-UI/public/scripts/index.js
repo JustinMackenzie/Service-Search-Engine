@@ -465,7 +465,12 @@ var YellowPages = function () {
 			xhrPostJson(serviceSearchApi, params, onSuccess, onError);
 		});
 
+		var clearServiceInvokeModal = function() {
+			self.serviceSearchTab.invokeServiceModal.result('');
+		}
+
 		var displayServiceInvokeModal = function (serv) {
+			clearServiceInvokeModal();
 			self.serviceSearchTab.invokeServiceModal.id(serv.id);
 			self.serviceSearchTab.invokeServiceModal.name(serv.name);
 			self.serviceSearchTab.invokeServiceModal.description(serv.description);
@@ -516,6 +521,7 @@ var YellowPages = function () {
 		serviceSearchTab.hasSearched = hasSearched;
 		serviceSearchTab.displayServiceInvokeModal = displayServiceInvokeModal;
 		serviceSearchTab.invokeServiceModal = invokeServiceModal;
+		serviceSearchTab.clearServiceInvokeModal = clearServiceInvokeModal;
         return serviceSearchTab;
     }());
 

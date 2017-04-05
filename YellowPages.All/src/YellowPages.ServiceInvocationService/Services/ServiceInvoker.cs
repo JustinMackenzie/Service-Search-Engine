@@ -40,7 +40,7 @@ namespace YellowPages.ServiceInvocationService.Services
                 string url = this.BuildUrl(service, request.Input.ToDictionary(i => i.Name, i => i.Value));
 
                 HttpResponseMessage serviceResponse = client.GetAsync(url).Result;
-                response.Response = JsonConvert.DeserializeObject<dynamic>(serviceResponse.Content.ReadAsStringAsync().Result);
+                response.Response = serviceResponse.Content.ReadAsStringAsync().Result;
             }
 
             return response;

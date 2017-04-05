@@ -8,6 +8,6 @@
         /// <value>
         /// The response.
         /// </value>
-        public dynamic Response { get; set; }
+        public string Response { get; set; }
     }
 }

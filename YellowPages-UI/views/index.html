@@ -173,6 +173,12 @@
                                             </div>
                                         </div>
 										<div class="row">
+											<div class="col-md-12 form-group">
+												<label>URL</label>
+												<input type="text" class="form-control" data-bind="value: url" />
+											</div>
+										</div>
+										<div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label>Tags</label>
 												<div data-bind="foreach: { data: tags, as: 'tag' }">
@@ -216,7 +222,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bind="click: function () { addService(orgId(), name(), description(), tags(), inputs()); }">Add</button>
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { addService(orgId(), name(), description(), url(), tags(), inputs()); }">Add</button>
                                     <button type="button" class="btn btn-default" data-bind="click: closeAddServiceModal">Cancel</button>
                                 </div>
                             </div>
@@ -251,6 +257,12 @@
                                                 <input type="text" class="form-control" data-bind="value: description" />
                                             </div>
                                         </div>
+										<div class="row">
+											<div class="col-md-12 form-group">
+												<label>URL</label>
+												<input type="text" class="form-control" data-bind="value: url" />
+											</div>
+										</div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label>Tags</label>
@@ -295,7 +307,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bind="click: function () { editService(id(), orgId(), name(), description(), tags(), inputs()); }">Edit</button>
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { editService(id(), orgId(), name(), description(), url(), tags(), inputs()); }">Edit</button>
                                     <button type="button" class="btn btn-default" data-bind="click: closeEditServiceModal">Cancel</button>
                                 </div>
                             </div>

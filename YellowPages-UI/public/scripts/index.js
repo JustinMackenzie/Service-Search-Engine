@@ -191,6 +191,7 @@ var YellowPages = function () {
 			self.organizationTab.addServiceModal.orgId('');
 			self.organizationTab.addServiceModal.name('');
 			self.organizationTab.addServiceModal.description('');
+			self.organizationTab.addServiceModal.url('');
 			self.organizationTab.addServiceModal.tags.removeAll();
 			self.organizationTab.addServiceModal.inputs.removeAll();
 		};
@@ -205,13 +206,14 @@ var YellowPages = function () {
 			var orgId = ko.observable('');
 			var name = ko.observable('');
 			var description = ko.observable('');
+			var url = ko.observable('');
 			var tags = ko.observableArray([]);
 			var inputs = ko.observableArray([]);
 			
 			var closeAddServiceModal = function () {
 				$('#addServiceModal').modal('hide');
 			};
-			var addService = function (orgId, name, description, tags, inputs) {
+			var addService = function (orgId, name, description, url, tags, inputs) {
 			    tags = tags.map(function (tag) {
 			        return '' + tag.tag();
 			    }).filter(function (tag) {
@@ -230,6 +232,7 @@ var YellowPages = function () {
 					organizationId: orgId,
 					name: name,
 					description: description,
+					url: url,
 					tags: tags,
 					input: inputs
 				};
@@ -269,6 +272,7 @@ var YellowPages = function () {
 			addServiceModal.orgId = orgId;
 			addServiceModal.name = name;
 			addServiceModal.description = description;
+			addServiceModal.url = url;
 			addServiceModal.tags = tags;
 			addServiceModal.inputs = inputs;
 			addServiceModal.closeAddServiceModal = closeAddServiceModal;
@@ -285,6 +289,7 @@ var YellowPages = function () {
 		    self.organizationTab.editServiceModal.orgId(service.orgId);
 		    self.organizationTab.editServiceModal.name(service.name);
 		    self.organizationTab.editServiceModal.description(service.description);
+			self.organizationTab.editServiceModal.url(service.url);
 		    self.organizationTab.editServiceModal.tags.removeAll();
 		    self.organizationTab.editServiceModal.inputs.removeAll();
 		    service.tags.forEach(function (tag) {
@@ -305,6 +310,7 @@ var YellowPages = function () {
 		    var orgId = ko.observable('');
 		    var name = ko.observable('');
 		    var description = ko.observable('');
+			var url = ko.observable('');
 		    var tags = ko.observableArray([]);
 		    var inputs = ko.observableArray([]);
 
@@ -312,7 +318,7 @@ var YellowPages = function () {
 		        $('#editServiceModal').modal('hide');
 		    };
 
-		    var editService = function (id, orgId, name, description, tags, inputs) {
+		    var editService = function (id, orgId, name, description, url, tags, inputs) {
 		        tags = tags.map(function (tag) {
 		            return '' + tag.tag();
 		        }).filter(function (tag) {
@@ -331,6 +337,7 @@ var YellowPages = function () {
 		            organizationId: orgId,
 		            name: name,
 		            description: description,
+					url: url,
 		            tags: tags,
                     input: inputs
 		        };
@@ -371,6 +378,7 @@ var YellowPages = function () {
 		    editServiceModal.orgId = orgId;
 		    editServiceModal.name = name;
 		    editServiceModal.description = description;
+			editServiceModal.url = url;
 		    editServiceModal.tags = tags;
 		    editServiceModal.inputs = inputs;
 		    editServiceModal.closeEditServiceModal = closeEditServiceModal;

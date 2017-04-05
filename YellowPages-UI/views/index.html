@@ -3,7 +3,7 @@
 <head>
 	<title>Yellow Pages</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="/style/organizationTab.css" />
+	<link rel="stylesheet" href="/style/table.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js"
             integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -23,45 +23,56 @@
                 <div role="tabpanel" class="tab-pane active" data-bind="with: organizationTab" id="organizations">
                     <div class="container">
                         <h3>Organizations</h3>
-                        <div class="pull-right">
-                            <button class="btn btn-default" data-bind="click: displayAddOrgModal"><span class="glyphicion glyphicon-plus"></span></button>
-                        </div>
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th>ID (remove this for final)</th>
+                                <tr class="columnHeader">
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Description</th>
 									<th></th>
                                 </tr>
                             </thead>
                             <tbody data-bind="foreach: { data: orgList, as: 'org' }">
-                                <tr>
+                                <tr class="parentRow">
                                     <td data-toggle="collapse" data-bind="text: org.id, attr: { 'data-target': '#serviceList' + $index()}"></td>
                                     <td data-toggle="collapse" data-bind="text: org.name, attr: { 'data-target': '#serviceList' + $index()}"></td>
                                     <td data-toggle="collapse" data-bind="text: org.description, attr: { 'data-target': '#serviceList' + $index()}"></td>
 									<td>
 										<div class="dropdown">
-											<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu">
-												<li><a href="#" data-bind="click: $parent.displayEditOrgModal">Edit Organization</a></li>
-												<li><a href="#" data-bind="click: $parent.displayAddServiceModal">Add Service</a></li>
-												<li class="divider"></li>
-												<li><a href="#" data-bind="click: $parent.displayRemoveOrgModal">Remove Organization</a></li>
-											</ul>
+											<div class="pull-right">
+												<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu">
+													<li><a href="#" data-bind="click: $parent.displayEditOrgModal">Edit Organization</a></li>
+													<li><a href="#" data-bind="click: $parent.displayAddServiceModal">Add Service</a></li>
+													<li class="divider"></li>
+													<li><a href="#" data-bind="click: $parent.displayRemoveOrgModal">Remove Organization</a></li>
+												</ul>
+											</div>
 										</div>
 									</td>
                                 </tr>
                                 <tr class="collapse" data-bind="attr: { id: 'serviceList' + $index()}">
                                     <td colspan="4">
-                                        <table class="table" data-bind="foreach: { data: org.serviceList, as: 'service' }">
-                                            <tr>
+                                        <table class="table childTable" data-bind="foreach: { data: org.serviceList, as: 'service' }">
+                                            <tr class="childRow">
                                                 <td data-bind="text: service.name"></td>
                                                 <td data-bind="text: service.description"></td>
-                                                <td><button class="btn btn-default" type="button" data-bind="click: $root.organizationTab.displayEditServiceModal"><span>Edit</span></button></td>
-                                                <td><button class="btn btn-default" type="button" data-bind="click: $root.organizationTab.displayRemoveServiceModal"><span>Remove</span></button></td>
+                                                <td>
+													<div class="pull-right">
+														<button class="btn btn-default" type="button" data-bind="click: $root.organizationTab.displayEditServiceModal">
+															<span>Edit</span>
+														</button>
+													</div>
+												</td>
+                                                <td>
+													<div class="pull-right">
+														<button class="btn btn-default" type="button" data-bind="click: $root.organizationTab.displayRemoveServiceModal">
+															<span>Remove</span>
+														</button>
+													</div>
+												</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -158,7 +169,7 @@
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class="col-md-12 form-group">
-                                                <label>Organization ID (remove for final)</label>
+                                                <label>Organization ID</label>
 												<span data-bind="text: orgId"></span>
                                             </div>
                                         </div>
@@ -239,11 +250,11 @@
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label>Service ID (remove for final)</label>
+                                                <label>Service ID</label>
                                                 <span data-bind="text: id"></span>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label>Organization ID (remove for final)</label>
+                                                <label>Organization ID</label>
                                                 <span data-bind="text: orgId"></span>
                                             </div>
                                         </div>

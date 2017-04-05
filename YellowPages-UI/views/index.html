@@ -60,8 +60,8 @@
                                             <tr>
                                                 <td data-bind="text: service.name"></td>
                                                 <td data-bind="text: service.description"></td>
-                                                <td><button class="btn btn-default" type="button" data-bind="click: $parent.displayEditServiceModal"><span class="glyphicion glyphicon-edit"></span></button></td>
-                                                <td><button class="btn btn-default" type="button" data-bind="click: $parent.displayRemoveServiceModal"><span class="glyphicion glyphicon-trash"></span></button></td>
+                                                <td><button class="btn btn-default" type="button" data-bind="click: $root.organizationTab.displayEditServiceModal"><span>Edit</span></button></td>
+                                                <td><button class="btn btn-default" type="button" data-bind="click: $root.organizationTab.displayRemoveServiceModal"><span>Remove</span></button></td>
                                             </tr>
                                         </table>
                                     </td>

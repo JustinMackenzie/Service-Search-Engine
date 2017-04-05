@@ -48,7 +48,19 @@ var YellowPages = function () {
         };
         var loadOrganizationList = function () {
             var onSuccess = function (organizations) {
-                console.log(organizations);
+                organizations.sort(function (a, b) {
+                    var nameA = a.name.toUpperCase(); 
+                    var nameB = b.name.toUpperCase(); 
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+
+                    return 0;
+                });
+                
                 self.organizationTab.orgList.removeAll();
                 organizations.forEach(function (organization) {
                     organization.serviceList = ko.observableArray([]);
@@ -104,7 +116,7 @@ var YellowPages = function () {
             return addOrgModal;
         }());
 		
-		var displayEditOrgModal = function (org) {
+        var displayEditOrgModal = function (org) {
 			self.organizationTab.editOrgModal.id(org.id);
 			self.organizationTab.editOrgModal.name(org.name);
 			self.organizationTab.editOrgModal.description(org.description);
@@ -202,8 +214,7 @@ var YellowPages = function () {
 			var addService = function (orgId, name, description, tags, inputs) {
 			    tags = tags.map(function (tag) {
 			        return '' + tag.tag();
-			    });
-			    tags.filter(function (tag) {
+			    }).filter(function (tag) {
 			        return !!tag;
 			    });
 
@@ -211,8 +222,7 @@ var YellowPages = function () {
 			        input.name = '' + input.name();
 			        input.type = '' + input.type();
 			        return input;
-			    });
-			    inputs.filter(function (input) {
+			    }).filter(function (input) {
 			        return !!input.name && !!input.type;
 			    });
 
@@ -231,7 +241,7 @@ var YellowPages = function () {
 				var onError = function () {
 					alert('Failed to add service.');
 				};
-				//xhrPost(serviceRegisterApi, params, onSuccess, onError);
+				xhrPostJson(serviceRegisterApi, params, onSuccess, onError);
 			};
 
 			var addTag = function () {
@@ -275,8 +285,14 @@ var YellowPages = function () {
 		    self.organizationTab.editServiceModal.orgId(service.orgId);
 		    self.organizationTab.editServiceModal.name(service.name);
 		    self.organizationTab.editServiceModal.description(service.description);
-		    self.organizationTab.editServiceModal.tags(service.tags);
-		    self.organizationTab.editServiceModal.inputs(service.inputs);
+		    self.organizationTab.editServiceModal.tags.removeAll();
+		    self.organizationTab.editServiceModal.inputs.removeAll();
+		    service.tags.forEach(function (tag) {
+		        self.organizationTab.editServiceModal.tags.push({ tag: ko.observable(tag) });
+		    });
+		    service.inputs.forEach(function (input) {
+		        self.organizationTab.editServiceModal.inputs.push({ name: ko.observable(input.name), type: ko.observable(input.type) });
+		    });
 		};
 
 		var displayEditServiceModal = function (service) {
@@ -299,8 +315,7 @@ var YellowPages = function () {
 		    var editService = function (id, orgId, name, description, tags, inputs) {
 		        tags = tags.map(function (tag) {
 		            return '' + tag.tag();
-		        });
-		        tags.filter(function (tag) {
+		        }).filter(function (tag) {
 		            return !!tag;
 		        });
 
@@ -308,8 +323,7 @@ var YellowPages = function () {
 		            input.name = '' + input.name();
 		            input.type = '' + input.type();
 		            return input;
-		        });
-		        inputs.filter(function (input) {
+		        }).filter(function (input) {
 		            return !!input.name && !!input.type;
 		        });
 
@@ -328,7 +342,7 @@ var YellowPages = function () {
 		        var onError = function () {
 		            alert('Could not edit service.');
 		        };
-		        xhrPut(serviceRegisterApi, params, onSuccess, onError);
+		        xhrPutJson(serviceRegisterApi + '/' + id, params, onSuccess, onError);
 		    };
 
 		    var addTag = function () {
@@ -364,6 +378,7 @@ var YellowPages = function () {
 		    editServiceModal.removeTag = removeTag;
 		    editServiceModal.addInput = addInput;
 		    editServiceModal.removeInput = removeInput;
+		    editServiceModal.editService = editService;
 		    return editServiceModal;
 		}());
 
@@ -394,7 +409,7 @@ var YellowPages = function () {
 		        var onError = function () {
 		            alert('Failed to remove service.');
 		        };
-		        xhrDelete(serviceRegisterApi + '?id=' + id, onSuccess, onError);
+		        xhrDelete(serviceRegisterApi + '/' + id, onSuccess, onError);
 		    };
 
 		    var removeServiceModal = {};
@@ -421,6 +436,7 @@ var YellowPages = function () {
 		organizationTab.displayEditServiceModal = displayEditServiceModal;
 		organizationTab.setEditServiceModal = setEditServiceModal;
 		organizationTab.editServiceModal = editServiceModal;
+		organizationTab.displayRemoveServiceModal = displayRemoveServiceModal;
 		organizationTab.setRemoveServiceModal = setRemoveServiceModal;
 		organizationTab.removeServiceModal = removeServiceModal;
 

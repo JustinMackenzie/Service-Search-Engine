@@ -37,7 +37,7 @@ namespace YellowPages.ServiceInvocationService.Services
 
             using (HttpClient client = new HttpClient())
             {
-                string url = this.BuildUrl(service, request.Input);
+                string url = this.BuildUrl(service, request.Input.ToDictionary(i => i.Name, i => i.Value));
 
                 HttpResponseMessage serviceResponse = client.GetAsync(url).Result;
                 response.Response = JsonConvert.DeserializeObject<dynamic>(serviceResponse.Content.ReadAsStringAsync().Result);
@@ -52,7 +52,7 @@ namespace YellowPages.ServiceInvocationService.Services
         /// <param name="service">The service.</param>
         /// <param name="input">The input.</param>
         /// <returns></returns>
-        private string BuildUrl(Service service, IDictionary<string, object> input)
+        private string BuildUrl(Service service, IDictionary<string, string> input)
         {
             if (input == null || !input.Any())
                 return service.Url;

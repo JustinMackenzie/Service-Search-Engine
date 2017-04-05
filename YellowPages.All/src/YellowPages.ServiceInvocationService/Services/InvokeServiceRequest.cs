@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace YellowPages.ServiceInvocationService.Services
 {
@@ -11,6 +12,7 @@ namespace YellowPages.ServiceInvocationService.Services
         /// <value>
         /// The service identifier.
         /// </value>
+        [JsonProperty(PropertyName = "serviceId")]
         public Guid ServiceId { get; set; }
 
         /// <summary>
@@ -19,6 +21,28 @@ namespace YellowPages.ServiceInvocationService.Services
         /// <value>
         /// The input.
         /// </value>
-        public Dictionary<string, object> Input { get; set; }
+        [JsonProperty(PropertyName = "input")]
+        public List<InputValue> Input { get; set; }
+    }
+
+    public class InputValue
+    {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
+        [JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
     }
 }

@@ -336,10 +336,45 @@
                         <h4 data-bind="visible: serviceResults().length == 0 && hasSearched()">Sorry we could not find any services matching your search...</h4>
                         <ul class="list-unstyled" data-bind="foreach: { data: serviceResults, as: 'serv' }">
                             <li>
-                                <h4 data-bind="text: serv.name"></h4>
+                                <a data-bind="click: $parent.displayServiceInvokeModal"><h4 data-bind="text: serv.name"></h4></a>
                                 <p data-bind="text: serv.description" />
                             </li>
                         </ul>
+                        </div>
+                    </div>
+                    <div id="invokeServiceModal" class="modal fade" data-bind="with: invokeServiceModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-bind="click: closeInvokeServiceModal"><span>&times;</span></button>
+                                    <h4 class="modal-title">Invoke Service</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <h1 data-bind="text: name"></h1>
+                                            <p data-bind="text: description"></p>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label>Inputs</label>
+                                                <div data-bind="foreach: { data: inputs, as: 'input' }">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            <label data-bind="text: input.name"></label>
+                                                            <input type="text" class="form-control" data-bind="value: input.value" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bind="click: function () { invokeService(id(), inputs()); }">Invoke</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeInvokeServiceModal">Cancel</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

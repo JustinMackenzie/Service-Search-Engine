@@ -5,6 +5,7 @@ var YellowPages = function () {
     var orgRegisterApi = 'https://organization-registration-service.mybluemix.net/api/organization-register';
 	var serviceRegisterApi = 'https://service-registration-service.mybluemix.net/api/service';
     var serviceSearchApi = 'https://service-search-service.mybluemix.net/api/search';
+	var invokeServiceApi = 'https://service-invocation-service.mybluemix.net/api/invoke';
 
     // Tab definitions
     self.organizationTab = (function () {
@@ -448,11 +449,57 @@ var YellowPages = function () {
 			xhrPostJson(serviceSearchApi, params, onSuccess, onError);
 		});
 
+		var displayServiceInvokeModal = function (serv) {
+			self.serviceSearchTab.invokeServiceModal.id(serv.id);
+			self.serviceSearchTab.invokeServiceModal.name(serv.name);
+			self.serviceSearchTab.invokeServiceModal.description(serv.description);
+			self.serviceSearchTab.invokeServiceModal.inputs(serv.input);
+			$('#invokeServiceModal').modal('show');
+		};
+
+		var invokeServiceModal = (function () {
+		    var id = ko.observable('');
+			var name = ko.observable('');
+			var description = ko.observable('');
+		    var inputs = ko.observableArray([]);
+			var result = ko.observable('');
+
+		    var closeInvokeServiceModal = function () {
+		        $('#invokeServiceModal').modal('hide');
+		    };
+
+		    var invokeService = function (id, input) {
+				var params = {
+					serviceId: id,
+					input: input
+				};
+		        var onSuccess = function (response) {
+					self.serviceSearchTab.invokeServiceModal.result(response);
+		        };
+		        var onError = function () {
+		            alert('Failed to invoke service.');
+		        };
+		        xhrPostJson(invokeServiceApi, params, onSuccess, onError);
+		    };
+
+		    var invokeServiceModal = {};
+		    invokeServiceModal.id = id;
+			invokeServiceModal.name = name;
+			invokeServiceModal.description = description;
+			invokeServiceModal.inputs = inputs;
+			invokeServiceModal.result = result;
+		    invokeServiceModal.closeInvokeServiceModal = closeInvokeServiceModal;
+			invokeServiceModal.invokeService = invokeService;
+		    return invokeServiceModal;
+		}());
+
         var serviceSearchTab = {};
 		serviceSearchTab.keywords = keywords;
 		serviceSearchTab.searchForService = searchForService;
 		serviceSearchTab.serviceResults = serviceResults;
 		serviceSearchTab.hasSearched = hasSearched;
+		serviceSearchTab.displayServiceInvokeModal = displayServiceInvokeModal;
+		serviceSearchTab.invokeServiceModal = invokeServiceModal;
         return serviceSearchTab;
     }());
 

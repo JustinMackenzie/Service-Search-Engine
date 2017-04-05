@@ -503,7 +503,7 @@ var YellowPages = function () {
 					input: input
 				};
 		        var onSuccess = function (response) {
-					self.serviceSearchTab.invokeServiceModal.result(JSON.stringify(response));
+					self.serviceSearchTab.invokeServiceModal.result(response.response);
 		        };
 		        var onError = function () {
 		            alert('Failed to invoke service.');

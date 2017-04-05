@@ -368,11 +368,19 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Response</h3>
+                                                </div>
+                                                <div class="panel-body" data-bind="text: result" style="max-height: 250px; overflow-y: scroll;"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" data-bind="click: function () { invokeService(id(), inputs()); }">Invoke</button>
-                                    <button type="button" class="btn btn-default" data-bind="click: closeInvokeServiceModal">Cancel</button>
+                                    <button type="button" class="btn btn-default" data-bind="click: closeInvokeServiceModal">Close</button>
                                 </div>
                             </div>
                         </div>
